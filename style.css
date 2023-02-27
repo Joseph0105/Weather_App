@@ -19,55 +19,95 @@ body {
   flex-direction: column;
   max-width: 400px;
   margin: 0 auto;
-  background-image: url(./ressources/gradient.jpg);
-  background-repeat: no-repeat;
+  background: url(./ressources/gradient.jpg);
   background-size: cover;
-  background-position: center;
-  border-radius: 5px;
-  box-shadow: 2px 2px 5px rgb(115, 113, 113);
+  border-radius: 8px;
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.375);
+  padding-top: 20px;
 }
 
 h1 {
-  font-weight: 300;
-  margin-top: 20px;
+  font-weight: 400;
+  font-family: Raleway, sans-serif;
+  font-size: 30px;
 }
 h1 span {
   font-weight: 600;
 }
 
-img {
-  width: 200px;
-  height: 200px;
-}
-
 .bloc-info {
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
-  padding: 10px;
+  padding: 0 10px;
+  margin-bottom: 35px;
+}
+.bloc-info img {
+  transform: scale(1.4);
+  width: 150px;
+  border-radius: 50%;
 }
 .bloc-info .temperature {
   align-self: center;
-  font-size: 50px;
+  font-size: 55px;
   font-weight: 600;
+  font-weight: bolder;
 }
+.bloc-info .position {
+  font-size: 30px;
+  font-weight: 300;
+  word-break: break-all;
+}
+
 .bottom-content {
+  border-top: 1px solid #333;
+  border-top-right-radius: 25px;
+  border-top-left-radius: 25px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #ffffff;
   width: 100%;
+  padding: 30px 20px 20px;
+  position: relative;
 }
 .bottom-content .tabs {
-  margin-top: 20px;
+  display: flex;
+  justify-content: center;
   margin-bottom: 20px;
 }
 .bottom-content .tabs button {
+  border: 1px solid #c3c3c3;
+  border-radius: 5px;
+  font-size: 20px;
+  min-width: 100px;
+  margin: 0 5px;
+  background: transparent;
+  cursor: pointer;
+  color: #c3c3c3;
   width: 100px;
   height: 30px;
-  align-self: center;
 }
-.bottom-content .forecast-content {
-  display: flex;
+.bottom-content .tabs button:hover {
+  color: #9d9d9d;
+  border: 1px solid #c7c7c7;
+}
+.bottom-content .tabs button.active {
+  color: #222;
+  border: 1px solid #b6b6b6;
+}
+
+.forecast-content {
+  display: grid;
+}
+.forecast-content .day-forecats,
+.forecast-content .hour-forecasts {
+  grid-area: 1/1/2/2;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
 }
 
 /*# sourceMappingURL=style.css.map */
