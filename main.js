@@ -83,5 +83,14 @@ function handleHour(dataForecast) {
 
   hourNameBlock.forEach((block, index) => {
     const incrementedHour = currentHour + index * 3;
+
+    if (incrementedHour > 24) {
+      const calcul = incrementedHour - 24;
+      hourNameBlock[index].textContent = `${calcul === 24 ? "00" : calcul}h`;
+    } else if (incrementedHour === 24) {
+      hourNameBlock[index].textContent = "00h";
+    } else {
+      hourNameBlock[index].textContent = `${incrementedHour}h`;
+    }
   });
 }
