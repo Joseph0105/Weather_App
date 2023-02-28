@@ -5,7 +5,7 @@ if (navigator.geolocation) {
     (location) => {
       const longitude = location.coords.longitude;
       const latitude = location.coords.latitude;
-      console.log(location, longitude, latitude);
+
       getWeatherData(longitude, latitude);
     },
     () => {
@@ -27,9 +27,21 @@ async function getWeatherData(longitude, latitude) {
 
     const data = await response.json();
     console.log(data);
+    populateMainInfo(data);
+
     loader.classList.add("fade-out");
   } catch (error) {
     loader.textContent = `${error}`;
     loader.style.display = "none";
   }
+}
+
+const position = document.querySelector(".postion");
+const temperature = document.querySelector(".temperature");
+const weatherImage = document.querySelector("img");
+const curentHour = new Date().getHours();
+
+function populateMainInfo(data) {
+  temperature.textContent = `${Math.round(data.hourly.temperature_2m[0])}°C`;
+  console.log(temperature);
 }
