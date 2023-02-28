@@ -18,7 +18,7 @@ if (navigator.geolocation) {
 async function getWeatherData(longitude, latitude) {
   try {
     const response = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,precipitation&start_date=2023-02-28&end_date=2023-03-07`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=7197931893803327fe9bee5cbcac7991`
     );
 
     if (!response.ok) {
@@ -42,6 +42,14 @@ const weatherImage = document.querySelector("img");
 const curentHour = new Date().getHours();
 
 function populateMainInfo(data) {
-  temperature.textContent = `${Math.round(data.hourly.temperature_2m[0])}°C`;
+  temperature.textContent = `${Math.round(data.main.temp)}°C`;
   console.log(temperature);
+
+  position.textContent = data.name;
+
+  if (curentHour >= 6 && curentHour < 21) {
+    weatherImage.src = `ressources/jour/${data.weather[0].icon}.svg`;
+  } else {
+    weatherImage.src = `ressources/nuit/${data.weather[0].icon}.svg`;
+  }
 }
