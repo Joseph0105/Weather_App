@@ -96,4 +96,36 @@ function handleHour(dataForecast) {
       dataForecast.temperature_2m[index * 3]
     )}°C`;
   });
+  handleDays(dataForecast);
+}
+
+const weekDays = [
+  "lundi",
+  "mardi",
+  "mercredi",
+  "jeudi",
+  "vendredi",
+  "samedi",
+  "dimanche",
+];
+
+const currentDay = new Date().toLocaleDateString("fr-FR", { weekday: "long" });
+
+const forecastDays = weekDays
+  .slice(weekDays.indexOf(currentDay) + 1)
+  .concat(weekDays.slice(0, weekDays.indexOf(currentDay) + 1));
+
+const daysName = document.querySelectorAll(".day-name");
+const perDayTemperature = document.querySelectorAll(".day-temp");
+
+function handleDays(dataForecast) {
+  forecastDays.forEach((day, index) => {
+    daysName[index].textContent =
+      forecastDays[index].charAt(0).toUpperCase() +
+      forecastDays[index].slice(1, 3);
+
+    perDayTemperature[index].textContent = `${Math.trunc(
+      dataForecast.temperature_2m[index * 3]
+    )}°C`;
+  });
 }
