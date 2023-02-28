@@ -129,3 +129,22 @@ function handleDays(dataForecast) {
     )}°C`;
   });
 }
+
+const tabsBtns = [...document.querySelectorAll(".tabs button")];
+const tabsContent = [...document.querySelectorAll(".forecast")];
+
+tabsBtns.forEach((btn) => btn.addEventListener("click", handleTabs));
+
+function handleTabs(e) {
+  const indexToRemove = tabsBtns.findIndex((tab) =>
+    tab.classList.contains("active")
+  );
+
+  tabsBtns[indexToRemove].classList.remove("active");
+  tabsContent[indexToRemove].classList.remove("active");
+
+  const indexToShow = tabsBtns.indexOf(e.target);
+
+  tabsBtns[indexToShow].classList.add("active");
+  tabsContent[indexToShow].classList.add("active");
+}
