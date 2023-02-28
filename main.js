@@ -92,5 +92,8 @@ function handleHour(dataForecast) {
     } else {
       hourNameBlock[index].textContent = `${incrementedHour}h`;
     }
+    hourTemp[index].textContent = `${Math.trunc(
+      dataForecast.temperature_2m[index * 3]
+    )}°C`;
   });
 }
