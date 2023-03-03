@@ -7,6 +7,7 @@ if (navigator.geolocation) {
       const latitude = location.coords.latitude;
 
       getWeatherData(longitude, latitude);
+      getWeatherToday(longitude, latitude);
       getWeatherForecast(longitude, latitude);
     },
     () => {
@@ -29,7 +30,6 @@ async function getWeatherData(longitude, latitude) {
     const data = await response.json();
     console.log(data);
     populateMainInfo(data);
-    handleHour(data.hourly);
 
     loader.classList.add("fade-out");
   } catch (error) {
@@ -58,8 +58,20 @@ function populateMainInfo(data) {
 
 async function getWeatherForecast(longitude, latitude) {
   try {
+    let startDate = new Date();
+    startDate.setDate(startDate.getDate() + 1);
+    const formattedStartDate = startDate.toISOString().slice(0, 10);
+    console.log(formattedStartDate);
+
+    let tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    let sevenDaysLater = new Date();
+    sevenDaysLater.setDate(tomorrow.getDate() + 7);
+    let formattedEndDate = sevenDaysLater.toISOString().slice(0, 10);
+
+    console.log(formattedEndDate);
     const response = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&timezone=America%2FNew_York&start_date=2023-02-28&end_date=2023-03-07`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&start_date=${formattedStartDate}&end_date=${formattedEndDate}`
     );
 
     if (!response.ok) {
@@ -68,13 +80,39 @@ async function getWeatherForecast(longitude, latitude) {
 
     const dataForecast = await response.json();
     console.log(dataForecast);
-    handleHour(dataForecast.hourly);
+    handleDays(dataForecast.hourly);
 
     loader.classList.add("fade-out");
   } catch (error) {
     loader.textContent = `${error}`;
     loader.style.display = "none";
   }
+}
+
+async function getWeatherToday(longitude, latitude) {
+  try {
+    let startDate = new Date();
+    startDate.setDate(startDate.getDate() + 1);
+    const formattedDate = startDate.toISOString().slice(0, 10);
+    console.log(formattedDate);
+    const response = await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&start_date=${formattedDate}&end_date=${formattedDate}`
+    );
+
+    if (!response.ok) {
+      throw new Error(`Erreur: ${response.status}`);
+    }
+
+    const dataForecast = await response.json();
+
+    return dataForecast.hourly;
+
+    loader.classList.add("fade-out");
+  } catch (error) {
+    loader.textContent = `${error}`;
+    loader.style.display = "none";
+  }
+  handleHour(dataForecast.hourly);
 }
 
 function handleHour(dataForecast) {
@@ -92,11 +130,11 @@ function handleHour(dataForecast) {
     } else {
       hourNameBlock[index].textContent = `${incrementedHour}h`;
     }
+
     hourTemp[index].textContent = `${Math.trunc(
       dataForecast.temperature_2m[index * 3]
     )}°C`;
   });
-  handleDays(dataForecast);
 }
 
 const weekDays = [
