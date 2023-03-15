@@ -28,7 +28,7 @@ async function getWeatherData(longitude, latitude) {
     }
 
     const data = await response.json();
-    console.log(data);
+
     populateMainInfo(data);
 
     loader.classList.add("fade-out");
@@ -45,14 +45,13 @@ const currentHour = new Date().getHours();
 
 function populateMainInfo(data) {
   temperature.textContent = `${Math.round(data.main.temp)}°C`;
-  console.log(temperature);
 
   position.textContent = data.name;
 
   if (currentHour >= 6 && currentHour < 20) {
-    weatherImage.src = `ressources/jour/${data.weather[0].icon}.svg`;
+    weatherImage.src = `./ressources/jour/${data.weather[0].icon}.svg`;
   } else {
-    weatherImage.src = `ressources/nuit/${data.weather[0].icon}.svg`;
+    weatherImage.src = `./ressources/nuit/${data.weather[0].icon}.svg`;
   }
 }
 
@@ -61,7 +60,6 @@ async function getWeatherForecast(longitude, latitude) {
     let startDate = new Date();
     startDate.setDate(startDate.getDate() + 1);
     const formattedStartDate = startDate.toISOString().slice(0, 10);
-    console.log(formattedStartDate);
 
     let tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -69,7 +67,6 @@ async function getWeatherForecast(longitude, latitude) {
     sevenDaysLater.setDate(tomorrow.getDate() + 7);
     let formattedEndDate = sevenDaysLater.toISOString().slice(0, 10);
 
-    console.log(formattedEndDate);
     const response = await fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&start_date=${formattedStartDate}&end_date=${formattedEndDate}`
     );
@@ -79,7 +76,7 @@ async function getWeatherForecast(longitude, latitude) {
     }
 
     const dataForecast = await response.json();
-    console.log(dataForecast);
+
     handleDays(dataForecast.hourly);
 
     loader.classList.add("fade-out");
@@ -94,7 +91,7 @@ async function getWeatherToday(longitude, latitude) {
     let startDate = new Date();
     startDate.setDate(startDate.getDate() + 1);
     const formattedDate = startDate.toISOString().slice(0, 10);
-    console.log(formattedDate);
+
     const response = await fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&start_date=${formattedDate}&end_date=${formattedDate}`
     );
@@ -104,24 +101,24 @@ async function getWeatherToday(longitude, latitude) {
     }
 
     const dataForecast = await response.json();
-
-    return dataForecast.hourly;
-
+    handleHour(dataForecast.hourly);
+    console.log(handleHour);
     loader.classList.add("fade-out");
+    return dataForecast.hourly;
   } catch (error) {
     loader.textContent = `${error}`;
     loader.style.display = "none";
   }
-  handleHour(dataForecast.hourly);
 }
 
 function handleHour(dataForecast) {
   const hourNameBlock = document.querySelectorAll(".hour-name");
+
   const hourTemp = document.querySelectorAll(".hour-temp");
 
   hourNameBlock.forEach((block, index) => {
     const incrementedHour = currentHour + index * 3;
-
+    console.log(hourNameBlock);
     if (incrementedHour > 24) {
       const calcul = incrementedHour - 24;
       hourNameBlock[index].textContent = `${calcul === 24 ? "00" : calcul}h`;
